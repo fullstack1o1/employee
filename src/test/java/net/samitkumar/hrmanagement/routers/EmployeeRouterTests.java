@@ -1,7 +1,6 @@
 package net.samitkumar.hrmanagement.routers;
 
-import net.samitkumar.hrmanagement.models.Department;
-import net.samitkumar.hrmanagement.models.JobTitle;
+import net.samitkumar.hrmanagement.TestcontainersConfiguration;
 import net.samitkumar.hrmanagement.repositories.DepartmentRepository;
 import net.samitkumar.hrmanagement.repositories.EmployeeDocumentRepository;
 import net.samitkumar.hrmanagement.repositories.EmployeeHistoryRepository;
@@ -10,28 +9,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest(properties = "spring.flyway.enabled=false")
-@Testcontainers
+@SpringBootTest
 @AutoConfigureWebTestClient
 @WithMockUser
+@Import(TestcontainersConfiguration.class)
 class EmployeeRouterTests {
-	@Container
-	@ServiceConnection
-	final static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
-			.withInitScript("db/migration/V1__schema.sql");
-
 
 	@Autowired
 	WebTestClient webTestClient;
@@ -39,27 +29,18 @@ class EmployeeRouterTests {
 	//This object are not needed but we want to validate some data in the flow
 	@Autowired
 	DepartmentRepository departmentRepository;
+
 	@Autowired
 	JobTitleRepository jobTitleRepository;
+
 	@Autowired
 	EmployeeHistoryRepository employeeHistoryRepository;
+
 	@Autowired
 	EmployeeDocumentRepository employeeDocumentRepository;
 
 	@Test
 	void employeeRouterTest() {
-		var dept = departmentRepository
-				.save(
-						new Department(null, "IT")
-				);
-
-		var job = jobTitleRepository
-				.save(
-						new JobTitle(null,"Engineer", 2000.0, 4000.00)
-				);
-
-		System.out.println(jobTitleRepository.findAll());
-		System.out.println(departmentRepository.findAll());
 
 		assertAll(
 				//find all
@@ -149,7 +130,7 @@ class EmployeeRouterTests {
 							.expectBody()
 							.json("""
 								{
-									"employeeId":1,
+									"employeeId": 1,
 									"firstName":"John",
 									"lastName":"Doe",
 									"email":"john.doe@allinone.net",

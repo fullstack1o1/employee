@@ -1,5 +1,6 @@
 package net.samitkumar.hrmanagement.routers;
 
+import net.samitkumar.hrmanagement.TestcontainersConfiguration;
 import net.samitkumar.hrmanagement.repositories.DepartmentRepository;
 import net.samitkumar.hrmanagement.repositories.EmployeeDocumentRepository;
 import net.samitkumar.hrmanagement.repositories.EmployeeHistoryRepository;
@@ -8,27 +9,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@SpringBootTest(properties = "spring.flyway.enabled=false")
-@Testcontainers
+@SpringBootTest
 @AutoConfigureWebTestClient
 @WithMockUser
+@Import(TestcontainersConfiguration.class)
 class JobTitleRouterTests {
-	@Container
-	@ServiceConnection
-	final static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
-			.withInitScript("db/migration/V1__schema.sql");
-
 	@Autowired
 	WebTestClient webTestClient;
 

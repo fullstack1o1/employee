@@ -5,11 +5,8 @@ import net.samitkumar.hrmanagement.repositories.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
+import org.springframework.context.annotation.Import;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,8 +15,9 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(properties = "spring.flyway.enabled=false")
+@SpringBootTest
 @Testcontainers
+@Import(TestcontainersConfiguration.class)
 public class RepositoryTest {
 
     @Autowired
@@ -36,14 +34,6 @@ public class RepositoryTest {
 
     @Autowired
     EmployeeHistoryRepository employeeHistoryRepository;
-
-
-    @Container
-    @ServiceConnection
-    final static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
-//			.withCommand("postgres -c max_connections=42")
-//			.withCommand()
-			.withInitScript("db/migration/V1__schema.sql");
 
     @Test
     void entityTest() {
