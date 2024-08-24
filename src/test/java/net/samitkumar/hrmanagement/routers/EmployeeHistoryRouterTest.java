@@ -34,7 +34,7 @@ public class EmployeeHistoryRouterTest {
         assertAll(
                 () -> webTestClient
                         .get()
-                        .uri("/db/employee/history")
+                        .uri("/api/employee/history")
                         .exchange()
                         .expectStatus()
                         .isOk()

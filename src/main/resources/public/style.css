@@ -1,0 +1,82 @@
+body {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    width: 80%;
+    font-family: "Times New Roman" , sans-serif;
+}
+.demo {
+    font-family: sans-serif;
+    border: 1px solid #eee;
+    border-radius: 2px;
+    padding: 20px 30px;
+    margin-top: 1em;
+    margin-bottom: 40px;
+    user-select: none;
+    overflow-x: auto;
+}
+.tab-button {
+    padding: 6px 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    background: #f0f0f0;
+    margin-bottom: -1px;
+    margin-right: -1px;
+}
+.tab-button:hover {
+    background: #e0e0e0;
+}
+.tab-button.active {
+    background: #e0e0e0;
+    height: 70px;
+    margin: 2px 2px;
+}
+.tab {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+button.tab-button {
+    height: 40px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+tr {
+    height: 50px;
+    padding: auto;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #dddddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+* {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+div.parent {
+    display: flex;
+}
+div.children-right {
+    margin-left: 20px;
+}
+input, select, button {
+    height: 30px;
+}
+caption {
+    caption-side: top;
+    text-align: left;
+}

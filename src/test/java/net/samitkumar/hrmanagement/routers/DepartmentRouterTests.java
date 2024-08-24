@@ -46,7 +46,7 @@ class DepartmentRouterTests {
 				() -> {
 					webTestClient
 							.get()
-							.uri("/db/department")
+							.uri("/api/department")
 							.exchange()
 							.expectStatus()
 							.isOk()
@@ -59,7 +59,7 @@ class DepartmentRouterTests {
 				() -> {
 					webTestClient
 							.post()
-							.uri("/db/department")
+							.uri("/api/department")
 							.contentType(MediaType.APPLICATION_JSON)
 							.bodyValue("""
 							{
@@ -80,7 +80,7 @@ class DepartmentRouterTests {
 				() -> {
 					webTestClient
 							.get()
-							.uri("/db/department/{id}", 1)
+							.uri("/api/department/{id}", 1)
 							.exchange()
 							.expectStatus()
 							.isOk()
@@ -95,7 +95,7 @@ class DepartmentRouterTests {
 				() -> {
 					webTestClient
 							.put()
-							.uri("/db/department/{id}", 1)
+							.uri("/api/department/{id}", 1)
 							.contentType(MediaType.APPLICATION_JSON)
 							.bodyValue("""
 							{
@@ -117,7 +117,7 @@ class DepartmentRouterTests {
 				() -> {
 					webTestClient
 							.get()
-							.uri("/db/department")
+							.uri("/api/department")
 							.exchange()
 							.expectBody()
 							.json("""
@@ -132,14 +132,14 @@ class DepartmentRouterTests {
 				() -> {
 					webTestClient
 							.delete()
-							.uri("/db/department/{id}",1)
+							.uri("/api/department/{id}",1)
 							.exchange()
 							.expectStatus()
 							.isOk();
 				},
 				() -> webTestClient
 						.get()
-						.uri("/db/department/{id}", 1)
+						.uri("/api/department/{id}", 1)
 						.exchange()
 						.expectStatus()
 						.is5xxServerError()

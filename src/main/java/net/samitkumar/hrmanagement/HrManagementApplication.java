@@ -12,12 +12,9 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 public class HrManagementApplication {
@@ -38,25 +35,6 @@ public class HrManagementApplication {
 
 		return new CorsWebFilter(source);
 	}
-
-
-}
-
-@Controller
-class WebController {
-	@GetMapping("/")
-	public Mono<String> index() {
-		return Mono.just("index");
-	}
-
-	@GetMapping("/album")
-	public Mono<String> album() {
-		return Mono.just("album");
-	}
-	@GetMapping("/mnc")
-	public Mono<String> empManagement() {
-		return Mono.just("mnc");
-	}
 }
 
 @Configuration
@@ -65,16 +43,15 @@ class SecurityConfiguration {
 	@Bean
 	@SneakyThrows
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		http
+		return http
 				.authorizeExchange(exchange -> exchange
 						.pathMatchers("/actuator/**").permitAll()
 						.anyExchange().authenticated())
 				.cors(Customizer.withDefaults())
 				.csrf(csrfSpec -> csrfSpec/*.disable()*/
 						.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-						.requireCsrfProtectionMatcher(new PathPatternParserServerWebExchangeMatcher("^(?!\\/db\\/).*", HttpMethod.POST)))
+						.requireCsrfProtectionMatcher(new PathPatternParserServerWebExchangeMatcher("^(?!\\/api\\/).*", HttpMethod.POST)))
 				.formLogin(Customizer.withDefaults())
-		;
-		return http.build();
+				.build();
 	}
 }

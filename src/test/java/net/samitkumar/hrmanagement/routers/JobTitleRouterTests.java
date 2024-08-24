@@ -40,7 +40,7 @@ class JobTitleRouterTests {
 				//all
 				() -> webTestClient
 						.get()
-						.uri("/db/jobtitle")
+						.uri("/api/jobtitle")
 						.exchange()
 						.expectStatus()
 						.isOk()
@@ -51,7 +51,7 @@ class JobTitleRouterTests {
 				//save
 				() -> webTestClient
 						.post()
-						.uri("/db/jobtitle")
+						.uri("/api/jobtitle")
 						.contentType(MediaType.APPLICATION_JSON)
 						.bodyValue("""
 							{
@@ -75,7 +75,7 @@ class JobTitleRouterTests {
 				//find by Id
 				() -> webTestClient
 						.get()
-						.uri("/db/jobtitle/{id}", 1)
+						.uri("/api/jobtitle/{id}", 1)
 						.exchange()
 						.expectStatus()
 						.isOk()
@@ -91,7 +91,7 @@ class JobTitleRouterTests {
 				//Update
 				() -> webTestClient
 						.put()
-						.uri("/db/jobtitle/{id}", 1)
+						.uri("/api/jobtitle/{id}", 1)
 						.contentType(MediaType.APPLICATION_JSON)
 						.bodyValue("""
 							{
@@ -115,14 +115,14 @@ class JobTitleRouterTests {
 				//delete
 				() -> webTestClient
 						.delete()
-						.uri("/db/jobtitle/{id}", 1)
+						.uri("/api/jobtitle/{id}", 1)
 						.exchange()
 						.expectStatus()
 						.isOk(),
 				//Find by id and check If we have no data
 				() -> webTestClient
 						.get()
-						.uri("/db/jobtitle/{id}", 1)
+						.uri("/api/jobtitle/{id}", 1)
 						.exchange()
 						.expectStatus()
 						.is5xxServerError()

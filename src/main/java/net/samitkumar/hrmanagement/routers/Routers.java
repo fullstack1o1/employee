@@ -20,8 +20,7 @@ import java.util.Map;
 @Slf4j
 public class Routers {
     @Bean
-    RouterFunction<ServerResponse> routerFunction(FileHandler fileHandler,
-                                                  JobTitleHandler jobTitleHandler,
+    RouterFunction<ServerResponse> routerFunction(JobTitleHandler jobTitleHandler,
                                                   DepartmentHandler departmentHandler,
                                                   EmployeeHandler employeeHandler,
                                                   EmployeeDocumentsHandler employeeDocumentsHandler,
@@ -29,10 +28,7 @@ public class Routers {
         return RouterFunctions
                 .route()
                 .GET("/me", this::me)
-                .path("/scan", builder -> builder
-                        .GET("", fileHandler::scan)
-                )
-                .path("/db", builder -> builder
+                .path("/api", builder -> builder
                         .path("/department", deptBuilder -> deptBuilder
                                 .GET("", departmentHandler::allDepartment)
                                 .GET("/{id}", departmentHandler::departmentById)
@@ -67,13 +63,6 @@ public class Routers {
                                 .PUT("/{id}", employeeHandler::updateEmployee)
                                 .DELETE("/{id}", employeeHandler::deleteEmployee)
                         )
-                )
-                .path("/file", fileBuilder -> fileBuilder
-                        .POST("/upload", fileHandler::fileUpload)
-                        .GET("/download/{id}", fileHandler::fileDownload)
-                        .GET("/view/{id}", fileHandler::viewFile)
-                        .GET("/all", fileHandler::allFiles)
-                        //TODO implement DELETE
                 )
                 .after((request, response) -> {
                     log.info("{} {} {}", request.method(), request.path(), response.statusCode());

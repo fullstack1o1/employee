@@ -2,97 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <title>all-in-one</title>
-    <style>
-        body {
-            margin-left: auto;
-            margin-right: auto;
-            margin-top: 10px;
-            width: 80%;
-            font-family: "Times New Roman" , sans-serif;
-        }
-        .demo {
-            font-family: sans-serif;
-            border: 1px solid #eee;
-            border-radius: 2px;
-            padding: 20px 30px;
-            margin-top: 1em;
-            margin-bottom: 40px;
-            user-select: none;
-            overflow-x: auto;
-        }
-        .tab-button {
-            padding: 6px 10px;
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            background: #f0f0f0;
-            margin-bottom: -1px;
-            margin-right: -1px;
-        }
-        .tab-button:hover {
-            background: #e0e0e0;
-        }
-        .tab-button.active {
-            background: #e0e0e0;
-            height: 70px;
-            margin: 2px 2px;
-        }
-        .tab {
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-        button.tab-button {
-            height: 40px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
-        tr {
-            height: 50px;
-            padding: auto;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        th, td {
-            text-align: center;
-            padding: 8px;
-            border: 1px solid #dddddd;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-        * {
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
-        div.parent {
-            display: flex;
-        }
-        div.children-right {
-            margin-left: 20px;
-        }
-        input, select, button {
-            height: 30px;
-        }
-        caption {
-            caption-side: top;
-            text-align: left;
-        }
-    </style>
 </head>
 <body>
     <div id="app">
         <h1>{{ message }}</h1>
         <p>Welcome {{me}} !</p>
-        <a href="/">Dashboard</a> |
+        <a href="/public">Dashboard</a> |
         <a href="/logout">Logout</a>
         <div class="demo">
             <button v-for="(_, tab) in tabs"
@@ -345,7 +262,7 @@
         const departmentStore = defineStore('department', () => {
             const departments = ref([])
             const allDepartments = () => {
-                fetch(`${apiHost}/db/department`)
+                fetch(`${apiHost}/api/department`)
                     .then(r => {
                         if (!r.ok) {
                             throw new Error(`HTTP error! Status: ${r.status}`);
@@ -362,7 +279,7 @@
         const jobTitleStore = defineStore('jobTitle', () => {
             const jobTitles = ref([])
             const allJobTitle = () => {
-                fetch(`${apiHost}/db/jobtitle`)
+                fetch(`${apiHost}/api/jobtitle`)
                     .then(response => {
                         if(!response.ok) {
                             throw new Error('GET api error')
@@ -382,7 +299,7 @@
             const employees = ref([])
             const employeeNames = computed(() => employees.value.map((e) => `${e.firstName} ${e.lastName}`))
             const allEmployee = () => {
-                fetch(`${apiHost}/db/employee`)
+                fetch(`${apiHost}/api/employee`)
                     .then(r => {
                         if(!r.ok)
                             throw new Error("Employee fetch error")
@@ -431,7 +348,7 @@
                         const e = ref(null)
 
                         const saveDepartment = () => {
-                            fetch(`${apiHost}/db/department`, {
+                            fetch(`${apiHost}/api/department`, {
                                 method: 'POST',
                                 credentials: 'same-origin',
                                 headers: {
@@ -455,7 +372,7 @@
 
                         const allDepartment = () => {
                             console.log(`cookie ${document.cookie}`)
-                            fetch(`${apiHost}/db/department`)
+                            fetch(`${apiHost}/api/department`)
                                 .then(r => {
                                     if (!r.ok) {
                                         throw new Error(`HTTP error! Status: ${r.status}`);
@@ -470,7 +387,7 @@
                         }
 
                         const deleteDepartment = (id) => {
-                            fetch(`${apiHost}/db/department/${id}`, {
+                            fetch(`${apiHost}/api/department/${id}`, {
                                 method: 'DELETE'
                             })
                                 .then(r => {
@@ -498,7 +415,7 @@
                         const jobTitles = ref([])
                         const e = ref(null)
                         const submitJobTitle = () => {
-                            fetch(`${apiHost}/db/jobtitle`,{
+                            fetch(`${apiHost}/api/jobtitle`,{
                                 method: 'POST',
                                 headers: {
                                     "Content-Type": "application/json",
@@ -520,7 +437,7 @@
                                 .catch(err => e.value = err)
                         }
                         const allJobTitles = () => {
-                            fetch(`${apiHost}/db/jobtitle`)
+                            fetch(`${apiHost}/api/jobtitle`)
                                 .then(response => {
                                     if(!response.ok) {
                                         throw new Error('GET api error')
@@ -593,7 +510,7 @@
                                 }
                             }
 
-                            fetch(`${apiHost}/db/employee`,{
+                            fetch(`${apiHost}/api/employee`,{
                                 method: 'POST',
                                 headers: {"Content-Type": "application/json"},
                                 body: JSON.stringify(employee.value)
@@ -631,7 +548,7 @@
                                 }
                             }
 
-                            fetch(`${apiHost}/db/employee/multipart`, {
+                            fetch(`${apiHost}/api/employee/multipart`, {
                                 method: "POST",
                                 body: formdata
                             })
@@ -679,7 +596,7 @@
 
                         }
                         const allEmployeeHistory = () => {
-                            fetch(`${apiHost}/db/employee/history`)
+                            fetch(`${apiHost}/api/employee/history`)
                                 .then(response => {
                                     if(!response.ok) {
                                         throw new Error('GET api error')
@@ -706,7 +623,7 @@
                         const document = ref([]);
                         const e = ref(null)
                         const all = () => {
-                            fetch(`${apiHost}/db/employee/documents`)
+                            fetch(`${apiHost}/api/employee/documents`)
                                 .then(response => {
                                     if(response.ok)
                                         return response.json()

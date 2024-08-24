@@ -1,12 +1,16 @@
 logging:
-  file:
-    path: var/log
+#  file:
+#    path: var/log
   level:
     org:
       springframework:
         security: INFO
+        data:
+          jdbc: DEBUG
 
 spring:
+  application:
+    name: @project.name@
   security:
     user:
       password: password
@@ -15,19 +19,12 @@ spring:
         - ADMIN
         - READ
         - WRITE
-  application:
-    name: @project.name@
-    album:
-      storage:
-        local:
-          path: ${BASE_PATH:/tmp/upload}
-      thumbnail: false
   reactor:
     context-propagation: auto
   datasource:
-    username: ${DB_USERNAME:fake}
-    password: ${DB_PASSWORD:fake}
-    url: ${DB_HOST:jdbc:postgresql://localhost:5432/all-in-one}
+    username: user
+    password: secret
+    url: jdbc:postgresql://localhost:5432/hr-management
   flyway:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
@@ -39,6 +36,7 @@ spring:
 server:
   error:
     include-message: always
+
 management:
   endpoint:
     health:
