@@ -2,7 +2,7 @@ package net.samitkumar.employee.utilities;
 
 import org.springframework.http.MediaType;
 
-public class AllInOneUtility {
+public class EmployeeUtility {
     public static MediaType mediaTypeByFileExtension(String fileName) {
         return switch (getFileExtension(fileName)) {
             case "jpg", "jpeg" -> MediaType.IMAGE_JPEG;

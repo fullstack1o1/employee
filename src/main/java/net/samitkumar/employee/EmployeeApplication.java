@@ -17,10 +17,10 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @SpringBootApplication
-public class HrManagementApplication {
+public class EmployeeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HrManagementApplication.class, args);
+		SpringApplication.run(EmployeeApplication.class, args);
 	}
 
 	@Bean

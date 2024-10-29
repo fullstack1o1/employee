@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 public class EmployeeManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.from(HrManagementApplication::main).with(EmployeeManagementApplication.class).run(args);
+		SpringApplication.from(EmployeeApplication::main).with(EmployeeManagementApplication.class).run(args);
 	}
 
 }
