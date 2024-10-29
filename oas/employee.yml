@@ -1,0 +1,381 @@
+openapi: 3.0.3
+info:
+  title: Employee Management API
+  description: API for managing employees, departments, job titles, employee history, and documents.
+  version: 1.0.0
+servers:
+  - url: /api
+
+paths:
+  /department:
+    get:
+      summary: Get all departments
+      responses:
+        '200':
+          description: List of departments
+    post:
+      summary: Create a new department
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Department'
+      responses:
+        '201':
+          description: Department created
+  /department/{id}:
+    get:
+      summary: Get department by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Department details
+    put:
+      summary: Update department by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Department'
+      responses:
+        '200':
+          description: Department updated
+    delete:
+      summary: Delete department by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Department deleted
+
+  /jobtitle:
+    get:
+      summary: Get all job titles
+      responses:
+        '200':
+          description: List of job titles
+    post:
+      summary: Create a new job title
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobTitle'
+      responses:
+        '201':
+          description: Job title created
+  /jobtitle/{id}:
+    get:
+      summary: Get job title by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Job title details
+    put:
+      summary: Update job title by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobTitle'
+      responses:
+        '200':
+          description: Job title updated
+    delete:
+      summary: Delete job title by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Job title deleted
+
+  /employee:
+    get:
+      summary: Get all employees
+      responses:
+        '200':
+          description: List of employees
+    post:
+      summary: Create a new employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '201':
+          description: Employee created
+    post:
+      summary: Create a new employee with multipart data
+      operationId: createEmployeeMultipart
+      responses:
+        '201':
+          description: Employee created
+  /employee/{id}:
+    get:
+      summary: Get employee by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Employee details
+    put:
+      summary: Update employee by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: Employee updated
+    delete:
+      summary: Delete employee by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Employee deleted
+
+  /employee/documents:
+    get:
+      summary: Get all employee documents
+      responses:
+        '200':
+          description: List of employee documents
+    post:
+      summary: Upload a new employee document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeDocument'
+      responses:
+        '201':
+          description: Document created
+  /employee/documents/{id}:
+    get:
+      summary: Get employee document by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Employee document details
+    put:
+      summary: Update employee document by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeDocument'
+      responses:
+        '200':
+          description: Document updated
+    delete:
+      summary: Delete employee document by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Document deleted
+
+  /employee/history:
+    get:
+      summary: Get all employee history
+      responses:
+        '200':
+          description: List of employee history records
+    post:
+      summary: Create a new employee history record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeHistory'
+      responses:
+        '201':
+          description: Employee history created
+  /employee/history/{id}:
+    get:
+      summary: Get employee history by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Employee history details
+    put:
+      summary: Update employee history by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeHistory'
+      responses:
+        '200':
+          description: Employee history updated
+    delete:
+      summary: Delete employee history by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '204':
+          description: Employee history deleted
+
+components:
+  schemas:
+    Department:
+      type: object
+      properties:
+        department_id:
+          type: integer
+        department_name:
+          type: string
+    JobTitle:
+      type: object
+      properties:
+        job_id:
+          type: integer
+        title:
+          type: string
+        min_salary:
+          type: number
+          format: float
+        max_salary:
+          type: number
+          format: float
+    Employee:
+      type: object
+      properties:
+        employee_id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        hire_date:
+          type: string
+          format: date
+        salary:
+          type: number
+          format: float
+        manager_id:
+          type: integer
+        job_id:
+          type: integer
+        department_id:
+          type: integer
+    EmployeeHistory:
+      type: object
+      properties:
+        history_id:
+          type: integer
+        employee_id:
+          type: integer
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        job_id:
+          type: integer
+        department_id:
+          type: integer
+    EmployeeDocument:
+      type: object
+      properties:
+        document_id:
+          type: integer
+        employee_id:
+          type: integer
+        document_name:
+          type: string
+        document_content:
+          type: string
+          format: binary
