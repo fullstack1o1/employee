@@ -140,12 +140,6 @@ paths:
       responses:
         '201':
           description: Employee created
-    post:
-      summary: Create a new employee with multipart data
-      operationId: createEmployeeMultipart
-      responses:
-        '201':
-          description: Employee created
   /employee/{id}:
     get:
       summary: Get employee by ID
