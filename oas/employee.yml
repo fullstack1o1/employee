@@ -302,74 +302,92 @@ components:
     Department:
       type: object
       properties:
-        department_id:
+        departmentId:
           type: integer
-        department_name:
+        departmentName:
           type: string
+      required:
+        - departmentName
     JobTitle:
       type: object
       properties:
-        job_id:
+        jobId:
           type: integer
         title:
           type: string
-        min_salary:
+        minSalary:
           type: number
           format: float
-        max_salary:
+        maxSalary:
           type: number
           format: float
+      required:
+        - title
     Employee:
       type: object
       properties:
-        employee_id:
+        employeeId:
           type: integer
-        first_name:
+        firstName:
           type: string
-        last_name:
+        lastName:
           type: string
         email:
           type: string
-        phone_number:
+        phoneNumber:
           type: string
-        hire_date:
+        hireDate:
           type: string
           format: date
         salary:
           type: number
           format: float
-        manager_id:
+        managerId:
           type: integer
-        job_id:
+        jobId:
           type: integer
-        department_id:
+        departmentId:
           type: integer
+      required:
+        - firstName
+        - lastName
+        - email
+        - hireDate
     EmployeeHistory:
       type: object
       properties:
-        history_id:
+        historyId:
           type: integer
-        employee_id:
+        employeeId:
           type: integer
-        start_date:
+        startDate:
           type: string
           format: date
-        end_date:
+        endDate:
           type: string
           format: date
-        job_id:
+        jobId:
           type: integer
-        department_id:
+        departmentId:
           type: integer
+      required:
+        - employeeId
+        - startDate
+        - jobId
+        - departmentId
     EmployeeDocument:
       type: object
       properties:
-        document_id:
+        documentId:
           type: integer
-        employee_id:
+        employeeId:
           type: integer
-        document_name:
+        documentName:
           type: string
-        document_content:
+        documentContent:
           type: string
           format: binary
+      required:
+        - employeeId
+        - documentName
+        - documentContent

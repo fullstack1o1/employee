@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
@@ -81,7 +82,7 @@ public class RepositoryTest {
                             LocalDate.now(),
                             jobTitles.get(1).jobId(),
                             200.00,
-                            null,
+                            AggregateReference.to(1),
                             departments.get(1).departmentId(),
                             new EmployeeHistory(null, LocalDate.now(), null, jobTitles.get(1).jobId(), departments.get(1).departmentId(), null),
                             Set.of(
@@ -93,11 +94,36 @@ public class RepositoryTest {
         System.out.println(emp1);
         System.out.println(employeeHistoryRepository.findAll());
         System.out.println(employeeDocumentRepository.findAll());
+        var emp2 = employeeRepository
+                .save(
+                        new Employee(
+                                null,
+                                "Raj",
+                                "Khanna",
+                                "rajkhanna@all-in-one.net",
+                                "+45314536",
+                                LocalDate.now(),
+                                jobTitles.get(1).jobId(),
+                                200.00,
+                                AggregateReference.to(1),
+                                departments.get(1).departmentId(),
+                                new EmployeeHistory(null, LocalDate.now(), null, jobTitles.get(1).jobId(), departments.get(1).departmentId(), null),
+                                Set.of(
+                                        new EmployeeDocument(null, "IT-Return", "".getBytes(), null)
+                                ),
+                                null
+                        )
+                );
+        System.out.println(emp2);
+        System.out.println(employeeHistoryRepository.findAll());
+        System.out.println(employeeDocumentRepository.findAll());
 
         assertNotNull(emp1.employeeId());
         assertThat(emp1).isNotNull();
         assertThat(employeeRepository.findAll())
                 .asList()
-                .hasSize(1);
+                .hasSize(2);
+        System.out.println("#######################################");
+        employeeRepository.findEmployeeByManagerId(1).forEach(System.out::println);
     }
 }

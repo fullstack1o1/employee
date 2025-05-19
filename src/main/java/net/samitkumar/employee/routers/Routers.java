@@ -1,12 +1,13 @@
 package net.samitkumar.employee.routers;
 
 import lombok.extern.slf4j.Slf4j;
-import net.samitkumar.employee.handlers.*;
+import net.samitkumar.employee.handlers.DepartmentHandler;
+import net.samitkumar.employee.handlers.EmployeeDocumentsHandler;
+import net.samitkumar.employee.handlers.EmployeeHandler;
+import net.samitkumar.employee.handlers.EmployeeHistoryHandler;
+import net.samitkumar.employee.handlers.JobTitleHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -72,14 +73,6 @@ public class Routers {
     }
 
     private Mono<ServerResponse> me(ServerRequest request) {
-        return ReactiveSecurityContextHolder
-                .getContext()
-                .map(SecurityContext::getAuthentication)
-                .map(authentication -> {
-                    var roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority);
-                    var name = authentication.getName();
-                    return Map.of("roles", roles, "name", name);
-                })
-                .flatMap(ServerResponse.ok()::bodyValue);
+        return ServerResponse.ok().bodyValue(Map.of("name", "UNKNOWN"));
     }
 }

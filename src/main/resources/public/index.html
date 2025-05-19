@@ -246,16 +246,15 @@
         </table>
     </template>
 
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!-- pinia-->
-    <script src="https://unpkg.com/vue-demi"></script>
-    <script src="https://unpkg.com/pinia"></script>
-    <!-- pinia-->
+    <script src="vue.global.js"></script>
+    <script src="index.iife.js"></script>
+    <script src="pinia.iife.js"></script>
 
     <script>
         const {createApp, ref, onMounted, computed, watch} = Vue
         const { createPinia, defineStore, storeToRefs } = Pinia
         const pinia = createPinia()
+
         const apiHost = ''
 
         //store
