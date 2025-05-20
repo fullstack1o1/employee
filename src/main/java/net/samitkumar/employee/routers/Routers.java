@@ -8,6 +8,8 @@ import net.samitkumar.employee.handlers.EmployeeHistoryHandler;
 import net.samitkumar.employee.handlers.JobTitleHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -15,6 +17,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+
+import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
 
 @Configuration
@@ -60,9 +64,10 @@ public class Routers {
                                 .GET("", employeeHandler::allEmployee)
                                 .GET("/{id}", employeeHandler::employeeById)
                                 .POST("", employeeHandler::newEmployee)
-                                .POST("/multipart", employeeHandler::multipartNewEmployee)
+                                .POST("/multipart", accept(MediaType.MULTIPART_FORM_DATA), employeeHandler::multipartNewEmployee)
                                 .PUT("/{id}", employeeHandler::updateEmployee)
                                 .DELETE("/{id}", employeeHandler::deleteEmployee)
+
                         )
                 )
                 .after((request, response) -> {

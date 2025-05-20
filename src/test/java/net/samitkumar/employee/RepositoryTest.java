@@ -75,6 +75,7 @@ public class RepositoryTest {
                 .save(
                     new Employee(
                             null,
+                            null,
                             "John",
                             "Doe",
                             "prateek.m@all-in-one.net",
@@ -86,7 +87,7 @@ public class RepositoryTest {
                             departments.get(1).departmentId(),
                             new EmployeeHistory(null, LocalDate.now(), null, jobTitles.get(1).jobId(), departments.get(1).departmentId(), null),
                             Set.of(
-                                    new EmployeeDocument(null, "IT-Return", "".getBytes(), null)
+                                    new EmployeeDocument(null, "IT-Return","", "".getBytes(), null)
                             ),
                             null
                     )
@@ -97,6 +98,7 @@ public class RepositoryTest {
         var emp2 = employeeRepository
                 .save(
                         new Employee(
+                                null,
                                 null,
                                 "Raj",
                                 "Khanna",
@@ -109,7 +111,7 @@ public class RepositoryTest {
                                 departments.get(1).departmentId(),
                                 new EmployeeHistory(null, LocalDate.now(), null, jobTitles.get(1).jobId(), departments.get(1).departmentId(), null),
                                 Set.of(
-                                        new EmployeeDocument(null, "IT-Return", "".getBytes(), null)
+                                        new EmployeeDocument(null, "IT-Return", "", "".getBytes(), null)
                                 ),
                                 null
                         )

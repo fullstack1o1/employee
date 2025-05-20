@@ -142,14 +142,17 @@
                     </div>
                     <div class="children-right">
                         <label>Manager Id</label><br/>
-                        <input type="text" v-model="employee.managerId" disabled/>
+                        <select v-model="employee.managerId">
+                            <option disabled value="">Please select one</option>
+                            <option v-for="emp in employees" :value="emp.employeeId">{{ emp.firstName }} {{ emp.lastName }}</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="parent">
                     <div>
                         <label>Hire Date</label><br/>
-                        <input type="date" v-model="employee.hireDate"/>
+                        <input type="date" v-model="employee.hireDate" />
                     </div>
                     <div class="children-right">
                         <label>Start Date <span style="color: gray">(Employee History)</span></label><br/>
@@ -234,6 +237,7 @@
                     <th>Id</th>
                     <th>EmployeeId</th>
                     <th>File Name</th>
+                    <th>content</th>
                 </tr>
             </thead>
             <tbody>
@@ -241,9 +245,23 @@
                     <td>{{ d.documentId }}</td>
                     <td>{{ d.employeeId }}</td>
                     <td>{{ d.documentName }}</td>
+                    <td>
+                        <img v-if="d.documentType.includes('image/')" :src="'data:image/png;base64,' + d.documentContent" alt="Image" class="table-image" @click="showImage(d.documentContent, d.documentType)" />
+                        <div v-else class="embed-wrapper">
+                            <span @click="showImage(d.documentContent, d.documentType)" style="color: blue;cursor: pointer">view</span>
+                            <hr/>
+                            <embed :src="'data:' + d.documentType + ';base64,' + d.documentContent" :type="d.documentType" class="table-image" />
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
+
+        <div v-if="isModalVisible" class="modal" @click="closeModal">
+            <span class="close">&times;</span>
+            <img v-if="fileType.includes('image/')" :src="modalImageSrc" class="modal-image-content" />
+            <embed v-else :src="modalImageSrc" :type="fileType" class="modal-embed-content" />
+        </div>
     </template>
 
     <script src="vue.global.js"></script>
@@ -255,7 +273,7 @@
         const { createPinia, defineStore, storeToRefs } = Pinia
         const pinia = createPinia()
 
-        const apiHost = ''
+        const apiHost = 'http://localhost:8080'
 
         //store
         const departmentStore = defineStore('department', () => {
@@ -538,6 +556,7 @@
                             formdata.append("salary", employee.value.salary);
                             formdata.append("departmentId", employee.value.departmentId);
                             formdata.append("startDate", employee.value.startDate);
+                            formdata.append("managerId", employee.value.managerId);
 
                             const files = employee.value.employeeDocuments
 
@@ -563,6 +582,18 @@
                                 })
                                 .catch((error) => e.value = error);
                         }
+
+                        watch(
+                            [() => employee.value.firstName , () => employee.value?.lastName],
+                            ([fName, lName]) => {
+                                if(fName && lName) {
+                                    employee.value.email = `${fName.toLowerCase()}.${lName.toLowerCase()}@example.com`
+                                } else {
+                                    employee.value.email = ''
+                                }
+                            },
+                            { immediate: true }
+                        )
 
                         watch(() => employee.value.jobId, (newVal, oldVal) => {
                             if(newVal) {
@@ -621,6 +652,11 @@
                         const documents = ref([]);
                         const document = ref([]);
                         const e = ref(null)
+
+                        const isModalVisible = ref(false);
+                        const modalImageSrc = ref('');
+                        const fileType = ref('')
+
                         const all = () => {
                             fetch(`${apiHost}/api/employee/documents`)
                                 .then(response => {
@@ -629,11 +665,31 @@
                                     throw new Error("Error while fetching data")
                                 }).then(data => documents.value = data)
                         }
+
+                        const showImage = (base64Content, fileType) => {
+                            isModalVisible.value = true;
+                            fileType.value = fileType
+                            if(fileType.includes('image/')) {
+                                modalImageSrc.value = 'data:image/png;base64,' + base64Content;
+                            } else {
+                                modalImageSrc.value = 'data:' + fileType + ';base64,' + base64Content;
+                            }
+                        };
+
+                        const closeModal = () => {
+                            isModalVisible.value = false;
+                            modalImageSrc.value = '';
+                            fileType.value = ''
+                        };
+
                         onMounted(()=>{
                             all()
                         })
                         return{
-                            document, documents, e
+                            document, documents, e, isModalVisible,
+                            modalImageSrc,
+                            showImage,
+                            closeModal,fileType
                         }
                     }
                 }

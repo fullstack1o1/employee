@@ -15,6 +15,7 @@ import java.util.Set;
 @Table("employees")
 public record Employee(
         @Id Integer employeeId,
+        String empNo,
         String firstName,
         String lastName,
         String email,
@@ -27,8 +28,9 @@ public record Employee(
         @MappedCollection(idColumn = "employee_id") EmployeeHistory employeeHistory,
         @MappedCollection(idColumn = "employee_id") Set<EmployeeDocument> employeeDocuments,
         @JsonIgnore @Transient Object extraProperty) {
+
     @PersistenceCreator
-    public Employee(Integer employeeId, String firstName, String lastName, String email, String phoneNumber, LocalDate hireDate, Integer jobId, Double salary, AggregateReference<Employee, Integer> managerId, Integer departmentId, EmployeeHistory employeeHistory, Set<EmployeeDocument> employeeDocuments) {
-        this(employeeId, firstName, lastName, email, phoneNumber, hireDate, jobId, salary, managerId, departmentId, employeeHistory, employeeDocuments, null);
+    public Employee(Integer employeeId, String empNo, String firstName, String lastName, String email, String phoneNumber, LocalDate hireDate, Integer jobId, Double salary, AggregateReference<Employee, Integer> managerId, Integer departmentId, EmployeeHistory employeeHistory, Set<EmployeeDocument> employeeDocuments) {
+        this(employeeId, empNo, firstName, lastName, email, phoneNumber, hireDate, jobId, salary, managerId, departmentId, employeeHistory, employeeDocuments, null);
     }
 }

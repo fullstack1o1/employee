@@ -3,6 +3,7 @@ package net.samitkumar.employee.handlers;
 import lombok.RequiredArgsConstructor;
 import net.samitkumar.employee.models.EmployeeDocument;
 import net.samitkumar.employee.repositories.EmployeeDocumentRepository;
+import net.samitkumar.employee.utilities.EmployeeUtility;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import static java.util.Objects.nonNull;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Component
 @RequiredArgsConstructor
@@ -34,7 +38,7 @@ public class EmployeeDocumentsHandler {
                 .map(MultiValueMap::toSingleValueMap)
                 .map(stringPartMap -> stringPartMap.get("file"))
                 .cast(FilePart.class)
-                .flatMap(filePart -> DataBufferUtils.join(filePart.content()).map(dataBuffer -> new EmployeeDocument(null, filePart.filename(), dataBuffer.toByteBuffer().array(), 1)))
+                .flatMap(filePart -> DataBufferUtils.join(filePart.content()).map(dataBuffer -> new EmployeeDocument(null, filePart.filename(), EmployeeUtility.getDocumentsType(filePart), dataBuffer.toByteBuffer().array(), 1)))
                 .map(employeeDocumentRepository::save)
                 .flatMap(ServerResponse.ok()::bodyValue);
 

@@ -5,12 +5,15 @@ import net.samitkumar.employee.models.Employee;
 import net.samitkumar.employee.models.EmployeeDocument;
 import net.samitkumar.employee.models.EmployeeHistory;
 import net.samitkumar.employee.repositories.EmployeeRepository;
+import net.samitkumar.employee.utilities.EmployeeUtility;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.codec.multipart.FormFieldPart;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
@@ -53,6 +56,7 @@ public class EmployeeHandler {
                 .zipWith(Mono.fromCallable(() -> employeeRepository.findById(id).orElseThrow()), (newEmp, existingEmp) -> {
                     return new Employee(
                             existingEmp.employeeId(),
+                            existingEmp.empNo(),
                             newEmp.firstName(),
                             newEmp.lastName(),
                             newEmp.email(),
@@ -89,7 +93,8 @@ public class EmployeeHandler {
                     var hireDate = formFieldPartValue(stringPartMultiValueMap, "hireDate");
                     var jobId = formFieldPartValue(stringPartMultiValueMap, "jobId");
                     var salary = formFieldPartValue(stringPartMultiValueMap, "salary");
-                    //var managerId = formFieldPartValue(stringPartMultiValueMap, "managerId");
+                    var managerId = formFieldPartValue(stringPartMultiValueMap, "managerId");
+                    AggregateReference<Employee, Integer> managerIdAggregateReference = (nonNull(managerId) && StringUtils.hasText(managerId) && !"undefined".equals(managerId)) ? AggregateReference.to(Integer.valueOf(managerId)) : null;
                     var departmentId = formFieldPartValue(stringPartMultiValueMap, "departmentId");
                     var startDate = formFieldPartValue(stringPartMultiValueMap, "startDate");
 
@@ -104,10 +109,16 @@ public class EmployeeHandler {
                     return Flux.fromIterable(files)
                             .flatMap(filePart -> DataBufferUtils
                                     .join(filePart.content())
-                                    .map(dataBuffer -> new EmployeeDocument(null, filePart.filename(), dataBuffer.asByteBuffer().array(), null)))
+                                    .map(dataBuffer -> new EmployeeDocument(
+                                            null,
+                                            filePart.filename(),
+                                            EmployeeUtility.getDocumentsType(filePart),
+                                            dataBuffer.asByteBuffer().array(),
+                                            null)))
                             .collectList()
                             .map(Set::copyOf)
                             .map(documents -> new Employee(
+                                    null,
                                     null,
                                     firstName,
                                     lastName,
@@ -116,7 +127,7 @@ public class EmployeeHandler {
                                     LocalDate.parse(hireDate),
                                     Integer.valueOf(jobId),
                                     Double.parseDouble(salary),
-                                    null,
+                                    managerIdAggregateReference,
                                     Integer.valueOf(departmentId),
                                     new EmployeeHistory(null, LocalDate.parse(startDate), LocalDate.of(9999, 1, 1), Integer.valueOf(jobId), Integer.valueOf(departmentId), null),
                                     documents, null));

@@ -1,6 +1,10 @@
 package net.samitkumar.employee.utilities;
 
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.multipart.FilePart;
+
+import static java.util.Objects.nonNull;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 public class EmployeeUtility {
     public static MediaType mediaTypeByFileExtension(String fileName) {
@@ -21,6 +25,10 @@ public class EmployeeUtility {
             return fileName.substring(lastDotIndex + 1).toLowerCase();
         }
         return "";
+    }
+
+    public static String getDocumentsType(FilePart filePart) {
+        return (nonNull(filePart) && !isEmpty(filePart.headers())) ? filePart.headers().getContentType().toString() : null;
     }
 }
 

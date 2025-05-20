@@ -4,7 +4,7 @@ info:
   description: API for managing employees, departments, job titles, employee history, and documents.
   version: 1.0.0
 servers:
-  - url: /api
+  - url: http://localhost:8080/api
 
 paths:
   /department:
@@ -13,6 +13,12 @@ paths:
       responses:
         '200':
           description: List of departments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DepartmentResponse'
     post:
       summary: Create a new department
       requestBody:
@@ -20,10 +26,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Department'
+              $ref: '#/components/schemas/DepartmentRequest'
       responses:
         '201':
           description: Department created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentResponse'
   /department/{id}:
     get:
       summary: Get department by ID
@@ -36,6 +46,10 @@ paths:
       responses:
         '200':
           description: Department details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentResponse'
     put:
       summary: Update department by ID
       parameters:
@@ -49,10 +63,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Department'
+              $ref: '#/components/schemas/DepartmentResponse'
       responses:
         '200':
           description: Department updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentResponse'
     delete:
       summary: Delete department by ID
       parameters:
@@ -71,6 +89,12 @@ paths:
       responses:
         '200':
           description: List of job titles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JobTitleResponse'
     post:
       summary: Create a new job title
       requestBody:
@@ -78,10 +102,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JobTitle'
+              $ref: '#/components/schemas/JobTitleRequest'
       responses:
         '201':
           description: Job title created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobTitleResponse'
   /jobtitle/{id}:
     get:
       summary: Get job title by ID
@@ -94,6 +122,10 @@ paths:
       responses:
         '200':
           description: Job title details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobTitleResponse'
     put:
       summary: Update job title by ID
       parameters:
@@ -107,10 +139,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/JobTitle'
+              $ref: '#/components/schemas/JobTitleResponse'
       responses:
         '200':
           description: Job title updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobTitleResponse'
     delete:
       summary: Delete job title by ID
       parameters:
@@ -129,6 +165,12 @@ paths:
       responses:
         '200':
           description: List of employees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeResponse'
     post:
       summary: Create a new employee
       requestBody:
@@ -136,10 +178,62 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Employee'
+              $ref: '#/components/schemas/EmployeeRequest'
       responses:
         '201':
           description: Employee created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+
+  /employee/multipart:
+    post:
+      summary: Create a new employee with multipart/form-data
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                    type: string
+                email:
+                    type: string
+                phoneNumber:
+                    type: string
+                hireDate:
+                    type: string
+                    format: date
+                jobId:
+                  type: integer
+                salary:
+                    type: number
+                    format: float
+                departmentId:
+                  type: integer
+                startDate:
+                    type: string
+                    format: date
+                managerId:
+                    type: integer
+                documentType:
+                    type: string
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '201':
+          description: Employee created with documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
   /employee/{id}:
     get:
       summary: Get employee by ID
@@ -152,6 +246,10 @@ paths:
       responses:
         '200':
           description: Employee details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
     put:
       summary: Update employee by ID
       parameters:
@@ -165,10 +263,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Employee'
+              $ref: '#/components/schemas/EmployeeResponse'
       responses:
         '200':
           description: Employee updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
     delete:
       summary: Delete employee by ID
       parameters:
@@ -187,6 +289,12 @@ paths:
       responses:
         '200':
           description: List of employee documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeDocumentResponse'
     post:
       summary: Upload a new employee document
       requestBody:
@@ -194,7 +302,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeDocument'
+              $ref: '#/components/schemas/EmployeeDocumentRequest'
       responses:
         '201':
           description: Document created
@@ -210,6 +318,10 @@ paths:
       responses:
         '200':
           description: Employee document details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeDocumentResponse'
     put:
       summary: Update employee document by ID
       parameters:
@@ -223,10 +335,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeDocument'
+              $ref: '#/components/schemas/EmployeeDocumentResponse'
       responses:
         '200':
           description: Document updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeDocumentResponse'
     delete:
       summary: Delete employee document by ID
       parameters:
@@ -245,6 +361,12 @@ paths:
       responses:
         '200':
           description: List of employee history records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeHistoryResponse'
     post:
       summary: Create a new employee history record
       requestBody:
@@ -252,10 +374,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeHistory'
+              $ref: '#/components/schemas/EmployeeHistoryRequest'
       responses:
         '201':
           description: Employee history created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeHistoryResponse'
   /employee/history/{id}:
     get:
       summary: Get employee history by ID
@@ -268,6 +394,10 @@ paths:
       responses:
         '200':
           description: Employee history details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeHistoryResponse'
     put:
       summary: Update employee history by ID
       parameters:
@@ -281,10 +411,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmployeeHistory'
+              $ref: '#/components/schemas/EmployeeHistoryResponse'
       responses:
         '200':
           description: Employee history updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeHistoryResponse'
     delete:
       summary: Delete employee history by ID
       parameters:
@@ -299,7 +433,7 @@ paths:
 
 components:
   schemas:
-    Department:
+    DepartmentRequest:
       type: object
       properties:
         departmentId:
@@ -308,7 +442,14 @@ components:
           type: string
       required:
         - departmentName
-    JobTitle:
+    DepartmentResponse:
+      type: object
+      properties:
+        departmentId:
+          type: integer
+        departmentName:
+          type: string
+    JobTitleRequest:
       type: object
       properties:
         jobId:
@@ -323,7 +464,20 @@ components:
           format: float
       required:
         - title
-    Employee:
+    JobTitleResponse:
+      type: object
+      properties:
+        jobId:
+          type: integer
+        title:
+          type: string
+        minSalary:
+          type: number
+          format: float
+        maxSalary:
+          type: number
+          format: float
+    EmployeeRequest:
       type: object
       properties:
         employeeId:
@@ -353,7 +507,42 @@ components:
         - lastName
         - email
         - hireDate
-    EmployeeHistory:
+    EmployeeResponse:
+      type: object
+      properties:
+        employeeId:
+          type: integer
+        empNo:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        hireDate:
+          type: string
+          format: date
+        salary:
+          type: number
+          format: float
+        managerId:
+          type: integer
+        jobId:
+          type: integer
+        departmentId:
+          type: integer
+        employeeHistory:
+            type: array
+            items:
+                $ref: '#/components/schemas/EmployeeHistoryResponse'
+        employeeDocuments:
+            type: array
+            items:
+                $ref: '#/components/schemas/EmployeeDocumentResponse'
+    EmployeeHistoryRequest:
       type: object
       properties:
         historyId:
@@ -375,7 +564,24 @@ components:
         - startDate
         - jobId
         - departmentId
-    EmployeeDocument:
+    EmployeeHistoryResponse:
+      type: object
+      properties:
+        historyId:
+          type: integer
+        employeeId:
+          type: integer
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        jobId:
+          type: integer
+        departmentId:
+          type: integer
+    EmployeeDocumentRequest:
       type: object
       properties:
         documentId:
@@ -391,3 +597,17 @@ components:
         - employeeId
         - documentName
         - documentContent
+    EmployeeDocumentResponse:
+      type: object
+      properties:
+        documentId:
+          type: integer
+        employeeId:
+          type: integer
+        documentName:
+          type: string
+        documentType:
+          type: string
+        documentContent:
+          type: string
+          format: binary

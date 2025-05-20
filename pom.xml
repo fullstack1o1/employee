@@ -15,10 +15,6 @@
 	<properties>
 		<java.version>21</java.version>
 	</properties>
-	<scm>
-		<developerConnection>scm:git:https://github.com/samitkumarpatel/hr-management.git</developerConnection>
-		<tag>hr-management-1.0.0</tag>
-	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
