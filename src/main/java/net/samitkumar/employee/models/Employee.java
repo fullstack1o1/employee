@@ -16,11 +16,11 @@ import java.util.Set;
 public record Employee(
         @Id Integer employeeId,
         String empNo,
-        String firstName,
-        String lastName,
-        String email,
+        String firstName, //notnull
+        String lastName, //notnull
+        String email, //notnull
         String phoneNumber,
-        @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate hireDate,
+        @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate hireDate, //notnull
         Integer jobId,
         Double salary,
         AggregateReference<Employee, Integer> managerId,

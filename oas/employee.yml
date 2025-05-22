@@ -179,6 +179,45 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EmployeeRequest'
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                phoneNumber:
+                  type: string
+                hireDate:
+                  type: string
+                  format: date
+                jobId:
+                  type: integer
+                salary:
+                  type: number
+                  format: float
+                departmentId:
+                  type: integer
+                startDate:
+                  type: string
+                  format: date
+                managerId:
+                  type: integer
+                documentType:
+                  type: string
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+              required:
+                - firstName
+                - lastName
+                - email
+                - hireDate
       responses:
         '201':
           description: Employee created
@@ -502,6 +541,14 @@ components:
           type: integer
         departmentId:
           type: integer
+        employeeHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeHistoryRequestFromEmployee'
+        employeeDocuments:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeDocumentRequestFromEmployee'
       required:
         - firstName
         - lastName
@@ -564,6 +611,23 @@ components:
         - startDate
         - jobId
         - departmentId
+    EmployeeHistoryRequestFromEmployee:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        jobId:
+          type: integer
+        departmentId:
+          type: integer
+      required:
+        - startDate
+        - jobId
+        - departmentId
     EmployeeHistoryResponse:
       type: object
       properties:
@@ -595,6 +659,17 @@ components:
           format: binary
       required:
         - employeeId
+        - documentName
+        - documentContent
+    EmployeeDocumentRequestFromEmployee:
+      type: object
+      properties:
+        documentName:
+          type: string
+        documentContent:
+          type: string
+          format: binary
+      required:
         - documentName
         - documentContent
     EmployeeDocumentResponse:
