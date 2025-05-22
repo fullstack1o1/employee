@@ -351,6 +351,26 @@
                         const totalJobTitle = ref(0)
                         const totalEmployee = ref(0)
 
+                        //usage of dept store
+                        const deptStore = departmentStore();
+                        const { allDepartments } = deptStore;
+                        const { departments } = storeToRefs(deptStore)
+
+                        //usage of jobTitle store
+                        const jtStore = jobTitleStore();
+                        const { allJobTitle } = jtStore
+                        const { jobTitles } = storeToRefs(jtStore)
+
+                        const empStore = employeeStore()
+                        const { allEmployee } = empStore
+                        const { employees, employeeNames } = storeToRefs(empStore)
+
+                        onMounted(() => {
+                            totalDepartment.value = departments.value.length
+                            totalJobTitle.value = jobTitles.value.length
+                            totalEmployee.value = employees.value.length
+                        })
+                        
                         return {
                             totalDepartment, totalJobTitle, totalEmployee
                         }
