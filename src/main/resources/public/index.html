@@ -293,6 +293,83 @@
             }
             return { departments, allDepartments }
         })
+
+        const departmentStoreV2 = defineStore('departmentV2', {
+            state: () => {
+                return { departments: [] }
+            },
+            getters: {
+                departmentCount: (state) => state.departments.length,
+            },
+            actions: {
+                allDepartments() {
+                    fetch(`${apiHost}/api/department`)
+                        .then(r => {
+                            if (!r.ok) {
+                                throw new Error(`HTTP error! Status: ${r.status}`);
+                            } else {
+                                return r.json();
+                            }
+                        })
+                        .then(data => this.departments = data)
+                        .catch(err => console.log(err))
+                },
+                saveDepartment(department) {
+                    fetch(`${apiHost}/api/department`, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(department)
+                    })
+                        .then(r => {
+                            if (!r.ok) {
+                                throw new Error(`HTTP error! Status: ${r.status}`);
+                            } else {
+                                return r.json();
+                            }
+                        })
+                        .then(() => this.allDepartments())
+                        .catch(err => console.log(err))
+                },
+                deleteDepartment(id) {
+                    fetch(`${apiHost}/api/department/${id}`, {
+                        method: 'DELETE'
+                    })
+                        .then(r => {
+                            if (!r.ok) {
+                                throw new Error(`HTTP error! Status: ${r.status}`);
+                            }
+                            this.allDepartments()
+                        })
+                        .catch(err => console.log(err))
+                },
+                updateDepartment(department) {
+                    fetch(`${apiHost}/api/department/${department.departmentId}`, {
+                        method: 'PUT',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(department)
+                    })
+                        .then(r => {
+                            if (!r.ok) {
+                                throw new Error(`HTTP error! Status: ${r.status}`);
+                            } else {
+                                return r.json();
+                            }
+                        })
+                        .then(() => this.allDepartments())
+                        .catch(err => console.log(err))
+                }
+            },
+            persist: {
+                storage: localStorage, //use localStorage for persistence
+                paths: ['departments'] //only persist the departments state
+            }
+        })
+        
         const jobTitleStore = defineStore('jobTitle', () => {
             const jobTitles = ref([])
             const allJobTitle = () => {
@@ -312,6 +389,7 @@
                 jobTitles, allJobTitle
             }
         })
+        
         const employeeStore = defineStore('employee', () => {
             const employees = ref([])
             const employeeNames = computed(() => employees.value.map((e) => `${e.firstName} ${e.lastName}`))
