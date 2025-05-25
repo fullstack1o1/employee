@@ -8,9 +8,9 @@
 <body>
     <div id="app">
         <h1>{{ message }}</h1>
-        <p>Welcome {{me}} !</p>
+        <!-- <p>Welcome {{me}} !</p>
         <a href="/public">Dashboard</a> |
-        <a href="/logout">Logout</a>
+        <a href="/logout">Logout</a> -->
         <div class="demo">
             <button v-for="(_, tab) in tabs"
                     :key="tab"
@@ -258,7 +258,7 @@
         </table>
 
         <div v-if="isModalVisible" class="modal" @click="closeModal">
-            <span class="close">&times;</span>
+            <span class="close" style="color: black;">&times;</span>
             <img v-if="fileType.includes('image/')" :src="modalImageSrc" class="modal-image-content" />
             <embed v-else :src="modalImageSrc" :type="fileType" class="modal-embed-content" />
         </div>
@@ -355,21 +355,18 @@
                         const deptStore = departmentStore();
                         const { allDepartments } = deptStore;
                         const { departments } = storeToRefs(deptStore)
+                        totalDepartment.value = departments.value.length
 
                         //usage of jobTitle store
                         const jtStore = jobTitleStore();
                         const { allJobTitle } = jtStore
                         const { jobTitles } = storeToRefs(jtStore)
+                        totalJobTitle.value = jobTitles.value.length
 
                         const empStore = employeeStore()
                         const { allEmployee } = empStore
                         const { employees, employeeNames } = storeToRefs(empStore)
-
-                        onMounted(() => {
-                            totalDepartment.value = departments.value.length
-                            totalJobTitle.value = jobTitles.value.length
-                            totalEmployee.value = employees.value.length
-                        })
+                        totalEmployee.value = employees.value.length
                         
                         return {
                             totalDepartment, totalJobTitle, totalEmployee
