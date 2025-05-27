@@ -273,7 +273,7 @@
         const { createPinia, defineStore, storeToRefs } = Pinia
         const pinia = createPinia()
 
-        const apiHost = 'http://localhost:8080'
+        const apiHost = window.location.hostname.includes('localhost') ? 'http://localhost:8080' : '';
 
         //store
         const departmentStore = defineStore('department', () => {
