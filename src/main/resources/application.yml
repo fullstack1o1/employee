@@ -19,8 +19,8 @@ spring:
 #        - ADMIN
 #        - READ
 #        - WRITE
-  reactor:
-    context-propagation: auto
+#  reactor:
+#    context-propagation: limited
   datasource:
     username: user
     password: secret
