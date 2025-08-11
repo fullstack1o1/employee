@@ -53,4 +53,8 @@ public class EmployeeDocumentsHandler {
         return Mono.fromRunnable(() -> employeeDocumentRepository.deleteById(id))
                 .then(ServerResponse.ok().build());
     }
+
+    public Mono<ServerResponse> multipartNewEmployeeDocument(ServerRequest request) {
+        return ServerResponse.notFound().build();
+    }
 }

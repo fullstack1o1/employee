@@ -557,14 +557,6 @@ components:
           type: integer
         departmentId:
           type: integer
-        employeeHistory:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmployeeHistoryRequestFromEmployee'
-        employeeDocuments:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmployeeDocumentRequestFromEmployee'
       required:
         - firstName
         - lastName

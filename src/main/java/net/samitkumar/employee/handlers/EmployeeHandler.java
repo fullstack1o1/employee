@@ -45,31 +45,25 @@ public class EmployeeHandler {
     }
 
     public Mono<ServerResponse> newEmployee(ServerRequest request) {
-        System.out.println("#####New Employee Request: " + request.headers().accept());
-        if (request.headers().header("Content-Type").equals(MediaType.MULTIPART_FORM_DATA)) {
-            return multipartNewEmployee(request);
-        } else {
-            return request
-                    .bodyToMono(EmployeeRequest.class)
-                    .map(employee -> new Employee(
-                            null,
-                            null,
-                            employee.firstName(),
-                            employee.lastName(),
-                            employee.email(),
-                            employee.phoneNumber(),
-                            employee.hireDate(),
-                            employee.jobId(),
-                            employee.salary(),
-                            null,
-                            employee.departmentId(),
-                            new EmployeeHistory(null, employee.startDate(), LocalDate.of(9999, 1, 1), employee.jobId(), employee.departmentId(), null),
-                            Set.of(),
-                            null))
-                    .map(employeeRepository::save)
-                    .flatMap(ServerResponse.ok()::bodyValue);
-        }
-
+        return request
+                .bodyToMono(EmployeeRequest.class)
+                .map(employee -> new Employee(
+                        null,
+                        null,
+                        employee.firstName(),
+                        employee.lastName(),
+                        employee.email(),
+                        employee.phoneNumber(),
+                        employee.hireDate(),
+                        employee.jobId(),
+                        employee.salary(),
+                        null,
+                        employee.departmentId(),
+                        new EmployeeHistory(null, employee.startDate(), LocalDate.of(9999, 1, 1), employee.jobId(), employee.departmentId(), null),
+                        Set.of(),
+                        null))
+                .map(employeeRepository::save)
+                .flatMap(ServerResponse.ok()::bodyValue);
     }
 
     public Mono<ServerResponse> updateEmployee(ServerRequest request) {

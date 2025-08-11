@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
+import static org.springframework.web.reactive.function.server.RequestPredicates.contentType;
 
 
 @Configuration
@@ -50,7 +51,8 @@ public class Routers {
                                 .path("/documents", documentbuilder -> documentbuilder
                                         .GET("", employeeDocumentsHandler::allEmployeeDocuments)
                                         .GET("/{id}", employeeDocumentsHandler::employeeDocumentsbyId)
-                                        .POST("", employeeDocumentsHandler::newEmployeeDocument)
+                                        .POST("", contentType(MediaType.APPLICATION_JSON), employeeDocumentsHandler::newEmployeeDocument)
+                                        .POST("", contentType(MediaType.MULTIPART_FORM_DATA), employeeDocumentsHandler::multipartNewEmployeeDocument)
                                         .PUT("/{id}", employeeDocumentsHandler::updateEmployeeDocument)
                                         .DELETE("/{id}", employeeDocumentsHandler::deleteEmployeeDocument)
                                 )
@@ -63,7 +65,8 @@ public class Routers {
                                 )
                                 .GET("", employeeHandler::allEmployee)
                                 .GET("/{id}", employeeHandler::employeeById)
-                                .POST("", employeeHandler::newEmployee)
+                                .POST("", contentType(MediaType.APPLICATION_JSON) ,employeeHandler::newEmployee)
+                                .POST("", contentType(MediaType.MULTIPART_FORM_DATA) ,employeeHandler::multipartNewEmployee)
                                 .POST("/multipart", accept(MediaType.MULTIPART_FORM_DATA), employeeHandler::multipartNewEmployee)
                                 .PUT("/{id}", employeeHandler::updateEmployee)
                                 .DELETE("/{id}", employeeHandler::deleteEmployee)
