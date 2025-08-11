@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import net.samitkumar.employee.models.Employee;
 import net.samitkumar.employee.models.EmployeeDocument;
 import net.samitkumar.employee.models.EmployeeHistory;
+import net.samitkumar.employee.models.EmployeeRequest;
 import net.samitkumar.employee.repositories.EmployeeRepository;
 import net.samitkumar.employee.utilities.EmployeeUtility;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.http.MediaType;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.codec.multipart.FormFieldPart;
 import org.springframework.http.codec.multipart.Part;
@@ -44,7 +46,22 @@ public class EmployeeHandler {
 
     public Mono<ServerResponse> newEmployee(ServerRequest request) {
         return request
-                .bodyToMono(Employee.class)
+                .bodyToMono(EmployeeRequest.class)
+                .map(employee -> new Employee(
+                        null,
+                        null,
+                        employee.firstName(),
+                        employee.lastName(),
+                        employee.email(),
+                        employee.phoneNumber(),
+                        employee.hireDate(),
+                        employee.jobId(),
+                        employee.salary(),
+                        null,
+                        employee.departmentId(),
+                        new EmployeeHistory(null, employee.startDate(), LocalDate.of(9999, 1, 1), employee.jobId(), employee.departmentId(), null),
+                        Set.of(),
+                        null))
                 .map(employeeRepository::save)
                 .flatMap(ServerResponse.ok()::bodyValue);
     }
