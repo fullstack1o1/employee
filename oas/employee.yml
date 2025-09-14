@@ -529,6 +529,11 @@ components:
         maxSalary:
           type: number
           format: float
+    Manager:
+      type: object
+      properties:
+        id:
+          type: integer
     EmployeeRequest:
       type: object
       properties:
@@ -552,7 +557,7 @@ components:
           type: number
           format: float
         managerId:
-          type: integer
+          $ref: '#/components/schemas/Manager'
         jobId:
           type: integer
         departmentId:
@@ -588,7 +593,7 @@ components:
           type: number
           format: float
         managerId:
-          type: integer
+          $ref: '#/components/schemas/Manager'
         jobId:
           type: integer
         departmentId:
